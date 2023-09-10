@@ -22,5 +22,10 @@ public class RentController {
         return new ResponseEntity<>(rentService.saveRent(scooterId), HttpStatus.CREATED);
     }
 
+    @PostMapping("/unrent/scooter/{rentId}")
+    public ResponseEntity<Rent> unActiveRent(@PathVariable("rentId") int rentId)
+    {
+        return new ResponseEntity<Rent>(rentService.unActiveRent(rentId), HttpStatus.OK);
+    }
 
 }

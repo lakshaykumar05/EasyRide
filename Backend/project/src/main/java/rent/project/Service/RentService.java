@@ -1,6 +1,8 @@
 package rent.project.Service;
 
+import java.nio.channels.AlreadyBoundException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -48,6 +50,48 @@ public class RentService {
 
             rent = rentRepository.save(rent);
             
+        } catch (NoSuchElementException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return rent;
+    }
+
+    public Rent unActiveRent(int rentId)
+    {
+        Rent rent = new Rent();
+
+        try {
+            Optional < Rent > optRent = rentRepository.findById(rentId);
+
+            if(optRent.isEmpty())
+                throw new NoSuchElementException("Rent not found");
+
+            rent = optRent.get();
+
+            if(rent.getRentStatus() == Rent.RentStatus.COMPLETED)
+                throw new NoSuchElementException("This rent has already been completed");
+
+            rent.setRentStatus(Rent.RentStatus.COMPLETED);
+
+            Scooter scooter = adminRepository.findById(rent.getScooterId().getScooterId()).get();
+
+            scooter.setScooterStatus(Scooter.ScooterStatus.AVAILABLE);
+
+            LocalDateTime oldTime = rent.getTime();
+            LocalDateTime rentCompletionTime = oldTime.plus(rent.getDurationInHours(), ChronoUnit.HOURS);
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            if(currentTime.isAfter(rentCompletionTime))
+            {
+                System.out.println("You have to pay extra");
+            }
+
+            System.out.println("done all things in unactive rent");
+
+            scooter = adminRepository.save(scooter);
+            rent = rentRepository.save(rent);
+
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage());
         }
