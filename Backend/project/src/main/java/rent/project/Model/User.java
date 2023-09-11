@@ -16,7 +16,7 @@ public class User {
     private int userId;
 
     @NonNull
-    private String name;
+    private String username;
 
     @NonNull
     private String email;

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rent.project.Model.Scooter;
@@ -19,18 +20,18 @@ public class AdminController {
     AdminService adminService;
     
     @PostMapping("/admin/scooter/add")
-    public ResponseEntity<Scooter> addScooter(@RequestBody Scooter scooter)
+    public ResponseEntity<Scooter> addScooter(@RequestBody Scooter scooter, @RequestParam String key)
     {
-        Scooter scooterr = adminService.addScooter(scooter);
+        Scooter scooterr = adminService.addScooter(scooter, key);
         System.out.println("Admin added scooter");
         return new ResponseEntity<>(scooterr, HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/admin/scooter/delete/{scooterId}")
-    public ResponseEntity<Scooter> deleteScooter(@PathVariable("scooterId") int scooterId)
+    public ResponseEntity<Scooter> deleteScooter(@PathVariable("scooterId") int scooterId, @RequestParam String key)
     {
-        Scooter scooter = adminService.deleteScooter(scooterId);
+        Scooter scooter = adminService.deleteScooter(scooterId, key);
         return new ResponseEntity<Scooter>(scooter, HttpStatus.OK);
     }
 }

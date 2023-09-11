@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Admin {
@@ -22,10 +23,44 @@ public class Admin {
     @NonNull
     private String email;
 
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @NonNull
     private String password;
 
-    // private List < Scooter > addedScooters = new ArrayList<>();
+    @OneToMany
+    private List < Scooter > addedScooters = new ArrayList<>();
 
-    // private List < Scooter > deletedScooters = new ArrayList<>();
+    @OneToMany
+    private List < Scooter > deletedScooters = new ArrayList<>();
 }
