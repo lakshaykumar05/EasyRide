@@ -2,6 +2,7 @@ package rent.project.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import rent.project.Exception.AdminException;
 import rent.project.Model.Admin;
 import rent.project.Model.CurrentAdminSession;
+import rent.project.Model.Scooter;
 import rent.project.Repository.AdminLoginRepository;
 import rent.project.Repository.CurrentAdminSessionRepository;
 
@@ -38,6 +40,8 @@ public class AdminLoginService {
             admin2.setEmail(admin.getEmail());
             admin2.setName(admin.getName());
             admin2.setPassword(admin.getPassword());
+            List<Scooter> scooters = new ArrayList<>();
+            admin2.setScooters(scooters);
 
             admin2 = adminLoginRepository.save(admin2);
         } catch (Exception e) {

@@ -58,9 +58,14 @@ public class Admin {
     @NonNull
     private String password;
 
-    @OneToMany
-    private List < Scooter > addedScooters = new ArrayList<>();
+    public List<Scooter> getScooters() {
+        return scooters;
+    }
+
+    public void setScooters(List<Scooter> scooters) {
+        this.scooters = scooters;
+    }
 
     @OneToMany
-    private List < Scooter > deletedScooters = new ArrayList<>();
+    private List < Scooter > scooters = new ArrayList<>();
 }

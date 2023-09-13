@@ -36,6 +36,4 @@ public class AdminLoginController {
     {
         return new ResponseEntity<String>(adminLoginService.logoutAdmin(key), HttpStatus.OK);
     }
-    
-
 }

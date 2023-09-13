@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 // import org.springframework.data.annotation.Id;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Scooter {
@@ -22,6 +23,15 @@ public class Scooter {
     private int pricePerHour;
     private int penaltyPerHour;
 
+    @OneToOne
+    private Admin adminId;
+
+    public Admin getAdminId() {
+        return adminId;
+    }
+    public void setAdminId(Admin adminId) {
+        this.adminId = adminId;
+    }
     public int getScooterId() {
         return scooterId;
     }
