@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import rent.project.Model.CurrentUserSession;
 import rent.project.Model.User;
 import rent.project.Service.UserLoginService;
 
@@ -23,16 +24,14 @@ public class UserLoginController {
     }
 
     @PostMapping("user/login")
-    void loginUser()
+    ResponseEntity<CurrentUserSession> loginUser(@RequestBody User user)
     {
-
+        return new ResponseEntity<>(userLoginService.loginUser(user), null, HttpStatus.CREATED);
     }
 
     @PostMapping("user/logout")
-    void logoutUser()
+    ResponseEntity<String> logoutUser(String key)
     {
-
+        return new ResponseEntity<>(userLoginService.logoutUser(key), null, HttpStatus.CREATED);
     }
-
-    
 }
