@@ -87,7 +87,7 @@ public class UserLoginService {
     {
         try {
 
-            CurrentUserSession currentUserSession = currentUserSessionRepository.findByaid(key);
+            CurrentUserSession currentUserSession = currentUserSessionRepository.findByuid(key);
 
             if(currentUserSession == null)
                 throw new UserException("Not logged");

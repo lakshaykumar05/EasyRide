@@ -8,6 +8,6 @@ import rent.project.Model.CurrentUserSession;
 
 @Repository
 public interface CurrentUserSessionRepository extends JpaRepository<CurrentUserSession, Integer> {
-    @Query("select c from CurrentUserSession c where c.aid=?1")
-    public CurrentUserSession findByaid(String aid);
+    @Query("select c from CurrentUserSession c where c.uid=?1")
+    public CurrentUserSession findByuid(String uid);
 }
