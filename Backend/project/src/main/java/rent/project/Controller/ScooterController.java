@@ -14,7 +14,7 @@ import rent.project.Model.Scooter;
 import rent.project.Service.UserService;
 
 @RestController
-public class UserController {
+public class ScooterController {
 
     @Autowired
     UserService userService;

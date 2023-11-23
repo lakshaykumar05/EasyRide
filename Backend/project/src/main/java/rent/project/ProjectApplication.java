@@ -8,7 +8,7 @@ public class ProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
-		System.out.println("in main function... hey lakshay");
+		System.out.println("in main function... Welcome to easyride");
 	}
 
 }

@@ -14,14 +14,14 @@ import rent.project.Exception.AdminException;
 import rent.project.Model.Admin;
 import rent.project.Model.CurrentAdminSession;
 import rent.project.Model.Scooter;
-import rent.project.Repository.AdminLoginRepository;
+import rent.project.Repository.AdminRepository;
 import rent.project.Repository.CurrentAdminSessionRepository;
 
 @Service
 public class AdminLoginService {
 
     @Autowired
-    AdminLoginRepository adminLoginRepository;
+    AdminRepository adminLoginRepository;
 
     @Autowired
     CurrentAdminSessionRepository currentAdminSessionRepository;
@@ -105,10 +105,12 @@ public class AdminLoginService {
 
             currentAdminSessionRepository.delete(currentAdminSession);
 
+            return "Admin Logged Out";
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return "Admin Logged Out";
+        return "Error occured!";
     }
 }

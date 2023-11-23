@@ -22,39 +22,46 @@ public class Rent {
     private int id;
 
     @OneToOne
-    private Scooter scooterId;
+    private Scooter scooter;
 
-    // @OneToOne
-    // User userId;
+    int userId;
 
     private RentStatus rentStatus;
     private int durationInHours;
     private int rentPrice;
     private LocalDateTime time;
+
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    
     
     public int getId() {
         return id;
     }
     @Override
     public String toString() {
-        return "Rent [id=" + id + ", scooterId=" + scooterId + ", rentStatus=" + rentStatus + ", durationInHours="
+        return "Rent [id=" + id + ", scooter=" + scooter + ", rentStatus=" + rentStatus + ", durationInHours="
                 + durationInHours + ", rentPrice=" + rentPrice + ", time=" + time + "]";
     }
     public void setId(int id) {
         this.id = id;
     }
-    public Scooter getScooterId() {
-        return scooterId;
+    public Scooter getscooter() {
+        return scooter;
     }
-    public void setScooterId(Scooter scooterId) {
-        this.scooterId = scooterId;
+    public void setscooter(Scooter scooter) {
+        this.scooter = scooter;
     }
     public Rent() {
     }
-    public Rent(int id, Scooter scooterId, RentStatus rentStatus, int durationInHours, int rentPrice,
+    public Rent(int id, Scooter scooter, RentStatus rentStatus, int durationInHours, int rentPrice,
             LocalDateTime time) {
         this.id = id;
-        this.scooterId = scooterId;
+        this.scooter = scooter;
         this.rentStatus = rentStatus;
         this.durationInHours = durationInHours;
         this.rentPrice = rentPrice;

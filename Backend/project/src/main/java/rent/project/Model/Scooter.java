@@ -23,13 +23,13 @@ public class Scooter {
     private int pricePerHour;
     private int penaltyPerHour;
 
-    @OneToOne
-    private Admin adminId;
+    // @OneToOne
+    private int adminId;
 
-    public Admin getAdminId() {
+    public int getAdminId() {
         return adminId;
     }
-    public void setAdminId(Admin adminId) {
+    public void setAdminId(int adminId) {
         this.adminId = adminId;
     }
     public int getScooterId() {

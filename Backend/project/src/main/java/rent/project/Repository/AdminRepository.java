@@ -1,11 +1,14 @@
 package rent.project.Repository;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import rent.project.Model.Scooter;
+import rent.project.Model.Admin;
+
 
 @Repository
-public interface AdminRepository extends CrudRepository<Scooter, Integer> {
-    
+public interface AdminRepository extends JpaRepository<Admin, Integer> {
+    List<Admin> findByEmail(String email);
 }

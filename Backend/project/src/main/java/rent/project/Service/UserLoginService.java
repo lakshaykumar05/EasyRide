@@ -12,13 +12,13 @@ import rent.project.Exception.UserException;
 import rent.project.Model.CurrentUserSession;
 import rent.project.Model.User;
 import rent.project.Repository.CurrentUserSessionRepository;
-import rent.project.Repository.UserLoginRepository;
+import rent.project.Repository.UserRepository;
 
 @Service
 public class UserLoginService {
 
     @Autowired
-    UserLoginRepository userLoginRepository;
+    UserRepository userLoginRepository;
 
     @Autowired
     CurrentUserSessionRepository currentUserSessionRepository;
@@ -54,12 +54,12 @@ public class UserLoginService {
             if(user2 == null)
                 throw new UserException("User is not present with this email");
             
-            Optional < CurrentUserSession > currentUserSession = currentUserSessionRepository.findById(user.getUserId());
+            Optional < CurrentUserSession > currentUserSession = currentUserSessionRepository.findById(user2.getUserId());
 
             if(currentUserSession.isPresent())
                 throw new UserException("User already logged in");
 
-            if(user2.getEmail().equals(user.getEmail()))
+            if(user2.getPassword().equals(user.getPassword()))
             {
                 SecureRandom secureRandom = new SecureRandom();
                 byte[] keyBytes = new byte[10];
@@ -69,7 +69,7 @@ public class UserLoginService {
 
                 currentUserSession2.setUid(key);
                 currentUserSession2.setTime(LocalDateTime.now());
-                currentUserSession2.setUserId(user.getUserId());
+                currentUserSession2.setUserId(user2.getUserId());
 
                 currentUserSession2 = currentUserSessionRepository.save(currentUserSession2);
             }
@@ -90,15 +90,16 @@ public class UserLoginService {
             CurrentUserSession currentUserSession = currentUserSessionRepository.findByuid(key);
 
             if(currentUserSession == null)
-                throw new UserException("Not logged");
+                throw new UserException("Not logged in");
 
             currentUserSessionRepository.delete(currentUserSession);
             
+            return "User Logged out";
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return "User Logged out";
+        return "Error occured";
     }
     
 }

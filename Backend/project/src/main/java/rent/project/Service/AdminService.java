@@ -1,6 +1,8 @@
 package rent.project.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,21 +11,24 @@ import rent.project.Exception.AdminException;
 import rent.project.Model.Admin;
 import rent.project.Model.CurrentAdminSession;
 import rent.project.Model.Scooter;
-import rent.project.Repository.AdminLoginRepository;
 import rent.project.Repository.AdminRepository;
+import rent.project.Repository.ScooterRepository;
 import rent.project.Repository.CurrentAdminSessionRepository;
 
 @Service
 public class AdminService {
 
-    @Autowired
-    AdminRepository adminRepository;
+    // @Autowired
+    // ScooterRepository adminRepository;
 
     @Autowired
     CurrentAdminSessionRepository currentAdminSessionRepository;
 
     @Autowired
-    AdminLoginRepository adminLoginRepository;
+    AdminRepository adminLoginRepository;
+
+    @Autowired
+    ScooterRepository scooterRepository;
 
     public Scooter addScooter(Scooter scooter, String key)
     {
@@ -44,9 +49,9 @@ public class AdminService {
 
             Admin admin = adminLoginRepository.findById(currentAdminSession.getAdminID()).get();
 
-            scooter.setAdminId(admin);
+            scooter.setAdminId(admin.getAdminId());
 
-            scooterr = adminRepository.save(scooter);
+            scooterr = scooterRepository.save(scooter);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -66,8 +71,24 @@ public class AdminService {
             if(currentAdminSession == null)
                 throw new AdminException("Admin not authenticated");
 
-            scooter = adminRepository.findById(scooterId).get();
-            adminRepository.deleteById(scooterId);
+            Optional<Scooter> scooter2 = scooterRepository.findById(scooterId);
+
+            if(scooter2.isEmpty())
+                throw new NoSuchElementException("Scooter not found, so cant delete it");
+
+            int loggedAdmin_admin_id = currentAdminSession.getAdminID();
+
+            int scooter_admin_id = scooter2.get().getAdminId();
+
+            System.out.println("loggedAdmin_admin_id " + loggedAdmin_admin_id);
+
+            System.out.println("scooter_admin_id " + scooter_admin_id);
+
+            if(loggedAdmin_admin_id != scooter_admin_id)
+                throw new NoSuchElementException("Scooter does not match with user.");
+
+            scooter = scooterRepository.findById(scooterId).get();
+            scooterRepository.deleteById(scooterId);
         } catch (Exception e) {
             e.printStackTrace();
             // TODO: handle exception

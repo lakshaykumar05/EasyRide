@@ -9,9 +9,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rent.project.Model.CurrentUserSession;
 import rent.project.Model.Rent;
 import rent.project.Model.Scooter;
-import rent.project.Repository.AdminRepository;
+import rent.project.Repository.ScooterRepository;
+import rent.project.Repository.CurrentAdminSessionRepository;
+import rent.project.Repository.CurrentUserSessionRepository;
 import rent.project.Repository.RentRepository;
 
 @Service
@@ -21,28 +24,37 @@ public class RentService {
     RentRepository rentRepository;
 
     @Autowired
-    AdminRepository adminRepository;
+    ScooterRepository scooterRepository;
+
+    @Autowired
+    CurrentUserSessionRepository currentUserSessionRepository;
     
-    public Rent saveRent(int scooterId)
+    public Rent saveRent(int scooterId, String key)
     {
         Rent rent = new Rent();
         Scooter scooter = null;
 
         try {
 
-            Optional<Scooter> optional = adminRepository.findById(scooterId);
+            Optional<Scooter> optional = scooterRepository.findById(scooterId);
 
             if(optional.isEmpty())
                 throw new NoSuchElementException("Scooter not found");
 
-            scooter = adminRepository.findById(scooterId).get();
+            scooter = scooterRepository.findById(scooterId).get();
 
             if(scooter.getScooterStatus() == Scooter.ScooterStatus.BOOKED)
                 throw new NoSuchElementException("Scooter is already booked");
 
+            CurrentUserSession currentUserSession = currentUserSessionRepository.findByuid(key);
+
+            if(currentUserSession == null)
+                throw new NoSuchElementException("User is not logged in, so cant book a scooter.");
+
             scooter.setScooterStatus(Scooter.ScooterStatus.BOOKED);
 
-            rent.setScooterId(scooter);
+            rent.setUserId(currentUserSession.getUserId());
+            rent.setscooter(scooter);
             rent.setRentStatus(Rent.RentStatus.ACTIVE);
             rent.setDurationInHours(9);
             rent.setRentPrice(9 * scooter.getPricePerHour());
@@ -57,7 +69,7 @@ public class RentService {
         return rent;
     }
 
-    public Rent unActiveRent(int rentId)
+    public Rent unActiveRent(int rentId, String key)
     {
         Rent rent = new Rent();
 
@@ -67,6 +79,11 @@ public class RentService {
             if(optRent.isEmpty())
                 throw new NoSuchElementException("Rent not found");
 
+            CurrentUserSession currentUserSession = currentUserSessionRepository.findByuid(key);
+
+            if(currentUserSession == null)
+                throw new NoSuchElementException("User is not logged in, so cant do it.");
+
             rent = optRent.get();
 
             if(rent.getRentStatus() == Rent.RentStatus.COMPLETED)
@@ -74,7 +91,7 @@ public class RentService {
 
             rent.setRentStatus(Rent.RentStatus.COMPLETED);
 
-            Scooter scooter = adminRepository.findById(rent.getScooterId().getScooterId()).get();
+            Scooter scooter = scooterRepository.findById(rent.getscooter().getScooterId()).get();
 
             scooter.setScooterStatus(Scooter.ScooterStatus.AVAILABLE);
 
@@ -89,7 +106,7 @@ public class RentService {
 
             System.out.println("done all things in unactive rent");
 
-            scooter = adminRepository.save(scooter);
+            scooter = scooterRepository.save(scooter);
             rent = rentRepository.save(rent);
 
         } catch (NoSuchElementException e) {
