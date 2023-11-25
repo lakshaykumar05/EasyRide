@@ -10,19 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rent.project.Model.Scooter;
-import rent.project.Repository.UserScooterRepository;
+import rent.project.Repository.ScooterRepository;
 
 @Service
-public class UserService {
+public class UserScooterService {
     
     @Autowired
-    UserScooterRepository userRepository;
-
-    // @Override
-    // public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    //     // TODO Auto-generated method stub
-    //     return null;
-    // }
+    ScooterRepository userRepository;
 
     public List<Scooter> getScooters()
     {

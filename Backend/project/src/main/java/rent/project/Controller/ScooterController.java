@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import rent.project.Model.Scooter;
-import rent.project.Service.UserService;
+import rent.project.Service.UserScooterService;
 
 @RestController
 public class ScooterController {
 
     @Autowired
-    UserService userService;
+    UserScooterService userService;
     
     @GetMapping("/scooters")
     public ResponseEntity<List<Scooter>> getAllScooters()
